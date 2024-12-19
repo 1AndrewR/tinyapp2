@@ -1,0 +1,19 @@
+{
+  "name": "tinyapp2",
+  "version": "1.0.0",
+  "description": "URL Shortening App",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1AndrewR/tinyapp2.git"
+  },
+  "author": "1AndrewR",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1AndrewR/tinyapp2/issues"
+  },
+  "homepage": "https://github.com/1AndrewR/tinyapp2#readme"
+}
