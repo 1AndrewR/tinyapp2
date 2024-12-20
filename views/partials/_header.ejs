@@ -18,8 +18,8 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
       <div class="ml-auto">
-        <% if (username) { %>
-          <span class="navbar-text mr-2">Hello, <%= username %>!</span>
+        <% if (user) { %>
+          <span class="navbar-text mr-2">Hello, <%= user.email %>!</span>
           <form class="form-inline" method="POST" action="/logout">
             <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Log Out</button>
           </form>

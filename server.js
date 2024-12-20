@@ -17,6 +17,19 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com",
 };
 
+const users = {
+  userRandomID: {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur",
+  },
+  user2RandomID: {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk",
+  },
+};
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -30,16 +43,20 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
+  const userId = req.cookies["user_id"];
+  const user = users[userId];
   const templateVars = {
-    username: req.cookies["username"],
-    urls: urlDatabase
+    user,
+    urls: urlDatabase,
   };
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
+  const userId = req.cookies["user_id"];
+  const user = users[userId];
   const templateVars = {
-    username: req.cookies["username"]
+    user,
   };
   res.render("urls_new", templateVars);
 });
@@ -52,10 +69,12 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
+  const userId = req.cookies["user_id"];
+  const user = users[userId];
   const templateVars = {
-    username: req.cookies["username"],
+    user,
     id: req.params.id,
-    longURL: urlDatabase[req.params.id]
+    longURL: urlDatabase[req.params.id],
   };
   res.render("urls_show", templateVars);
 });
@@ -94,10 +113,38 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
+  const userId = req.cookies["user_id"];
+  const user = users[userId];
   const templateVars = {
-    username: req.cookies["username"]
+    user,
   };
   res.render("register", templateVars);
+});
+
+app.post("/register", (req, res) => {
+  const { email, password } = req.body;
+
+  // Check if email or password is empty
+  if (!email || !password) {
+    return res.status(400).send("Email and password cannot be empty");
+  }
+
+  // Check if email already exists
+  for (const userId in users) {
+    if (users[userId].email === email) {
+      return res.status(400).send("Email already registered");
+    }
+  }
+
+  const id = generateRandomString();
+  users[id] = {
+    id,
+    email,
+    password,
+  };
+
+  res.cookie("user_id", id);
+  res.redirect("/urls");
 });
 
 app.listen(PORT, () => {
