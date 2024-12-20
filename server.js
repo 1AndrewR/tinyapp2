@@ -30,6 +30,15 @@ const users = {
   },
 };
 
+function getUserByEmail(email) {
+  for (const userId in users) {
+    if (users[userId].email === email) {
+      return users[userId];
+    }
+  }
+  return null;
+}
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -111,14 +120,24 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const username = req.body.username;
-  res.cookie("username", username);
+  const { email, password } = req.body;
+  const user = getUserByEmail(email);
+
+  if (!user) {
+    return res.status(403).send("Email not found");
+  }
+
+  if (user.password !== password) {
+    return res.status(403).send("Incorrect password");
+  }
+
+  res.cookie("user_id", user.id);
   res.redirect("/urls");
 });
 
 app.post("/logout", (req, res) => {
-  res.clearCookie("username");
-  res.redirect("/urls");
+  res.clearCookie("user_id");
+  res.redirect("/login");
 });
 
 app.get("/register", (req, res) => {
@@ -139,10 +158,8 @@ app.post("/register", (req, res) => {
   }
 
   // Check if email already exists
-  for (const userId in users) {
-    if (users[userId].email === email) {
-      return res.status(400).send("Email already registered");
-    }
+  if (getUserByEmail(email)) {
+    return res.status(400).send("Email already registered");
   }
 
   const id = generateRandomString();
