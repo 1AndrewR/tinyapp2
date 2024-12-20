@@ -93,6 +93,13 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
+app.get("/register", (req, res) => {
+  const templateVars = {
+    username: req.cookies["username"]
+  };
+  res.render("register", templateVars);
+});
+
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
 });
