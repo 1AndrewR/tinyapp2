@@ -4,6 +4,7 @@
   "description": "URL Shortening App",
   "main": "server.js",
   "scripts": {
+    "start": "./node_modules/.bin/nodemon -L server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,5 +20,8 @@
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }
