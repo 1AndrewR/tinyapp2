@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieSession = require("cookie-session");
 const bcrypt = require("bcryptjs");
+const { getUserByEmail } = require("./helpers");
 const app = express();
 const PORT = 8080;
 
@@ -39,15 +40,6 @@ const users = {
     password: bcrypt.hashSync("dishwasher-funk", 10),
   },
 };
-
-function getUserByEmail(email) {
-  for (const userId in users) {
-    if (users[userId].email === email) {
-      return users[userId];
-    }
-  }
-  return null;
-}
 
 function urlsForUser(id) {
   const userUrls = {};
@@ -188,7 +180,7 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  const user = getUserByEmail(email);
+  const user = getUserByEmail(email, users);
 
   if (!user) {
     return res.status(403).send("Email not found");
@@ -228,7 +220,7 @@ app.post("/register", (req, res) => {
   }
 
   // Check if email already exists
-  if (getUserByEmail(email)) {
+  if (getUserByEmail(email, users)) {
     return res.status(400).send("Email already registered");
   }
 
