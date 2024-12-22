@@ -183,10 +183,12 @@ app.post("/login", (req, res) => {
   const user = getUserByEmail(email, users);
 
   if (!user) {
+    console.log("Email not found");
     return res.status(403).send("Email not found");
   }
 
   if (!bcrypt.compareSync(password, user.password)) {
+    console.log("Incorrect password");
     return res.status(403).send("Incorrect password");
   }
 
