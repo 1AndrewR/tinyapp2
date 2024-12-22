@@ -4,7 +4,17 @@ const getUserByEmail = function(email, database) {
       return database[userId];
     }
   }
-  return undefined; // Explicitly return undefined
+  return undefined;
 };
 
-module.exports = { getUserByEmail };
+const urlsForUser = function(userId, urlDatabase) {
+  const userUrls = {};
+  for (const shortURL in urlDatabase) {
+    if (urlDatabase[shortURL].userId === userId) {
+      userUrls[shortURL] = urlDatabase[shortURL];
+    }
+  }
+  return userUrls;
+};
+
+module.exports = { getUserByEmail, urlsForUser };
