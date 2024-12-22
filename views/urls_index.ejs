@@ -29,7 +29,7 @@
         <% for (let id in urls) { %>
         <tr>
           <td><%= id %></td>
-          <td><%= urls[id] %></td>
+          <td><%= urls[id].longURL %></td> <!-- Corrected access to longURL -->
           <td>
             <form method="POST" action="/urls/<%= id %>/delete">
               <button type="submit" class="btn btn-danger">Delete</button>
@@ -61,4 +61,3 @@
   ></script>
 </body>
 </html>
-
