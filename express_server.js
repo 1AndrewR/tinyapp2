@@ -13,10 +13,12 @@ app.use(cookieSession({
   keys: ['key1', 'key2'],
 }));
 
+// Function to generate a random string
 function generateRandomString() {
   return Math.random().toString(36).substring(2, 8);
-};
+}
 
+// URL database
 const urlDatabase = {
   b2xVn2: {
     longURL: "http://www.lighthouselabs.ca",
@@ -28,6 +30,7 @@ const urlDatabase = {
   },
 };
 
+// Users database
 const users = {
   userRandomID: {
     id: "userRandomID",
@@ -41,6 +44,7 @@ const users = {
   },
 };
 
+// Function to get URLs for a specific user
 function urlsForUser(id) {
   const userUrls = {};
   for (const shortURL in urlDatabase) {
@@ -51,8 +55,13 @@ function urlsForUser(id) {
   return userUrls;
 }
 
+// Routes
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  const userId = req.session.user_id;
+  if (userId) {
+    return res.redirect("/urls");
+  }
+  res.redirect("/login");
 });
 
 app.get("/urls.json", (req, res) => {
